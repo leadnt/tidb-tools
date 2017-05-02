@@ -557,10 +557,6 @@ func parserDDLTableNames(sql string) ([]*TableName, error) {
 			return res, errors.Errorf("drop table with multiple tables, may resovle ddl sql failed")
 		}
 		res = append(res, genTableName(v.Tables[0].Schema.L, v.Tables[0].Name.L))
-	case *ast.CreateIndexStmt:
-		res = append(res, genTableName(v.Table.Schema.L, v.Table.Name.L))
-	case *ast.DropIndexStmt:
-		res = append(res, genTableName(v.Table.Schema.L, v.Table.Name.L))
 	case *ast.TruncateTableStmt:
 		res = append(res, genTableName(v.Table.Schema.L, v.Table.Name.L))
 	case *ast.AlterTableStmt:
@@ -568,6 +564,10 @@ func parserDDLTableNames(sql string) ([]*TableName, error) {
 	case *ast.RenameTableStmt:
 		res = append(res, genTableName(v.OldTable.Schema.L, v.OldTable.Name.L))
 		res = append(res, genTableName(v.NewTable.Schema.L, v.NewTable.Name.L))
+	case *ast.CreateIndexStmt:
+		res = append(res, genTableName(v.Table.Schema.L, v.Table.Name.L))
+	case *ast.DropIndexStmt:
+		res = append(res, genTableName(v.Table.Schema.L, v.Table.Name.L))
 	default:
 		return res, errors.Errorf("unkown type ddl %s", sql)
 	}
